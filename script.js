@@ -1,5 +1,42 @@
-var turn =0;
+function newGame(){
+    let turn =0;
+let width =3;
+gameOver=0;
+for (let i = 0; i < width; i++) {
+    }
+    for(let i =0; i<width;++i){
 
+        for(let j =0; j<width;++j){
+            resultMatrix[i][j]=Math.random();
+     //       alert(resultMatrix[i][j]);
+        }
+    }
+    var removeTab1 = document.getElementById("NewButton");
+    if(removeTab1!=null){
+        var parentEl1 = removeTab1.parentElement;
+            parentEl1.removeChild(removeTab1);
+        }
+    var removetab = document.getElementById("tab1");
+    if(removetab!=null){
+        var parentEl1 = removetab.parentElement;
+            parentEl1.removeChild(removetab);
+        }
+    createTable();
+}
+
+let gameOver =0;
+var turn =0;
+let width =3;
+let resultMatrix = new Array(width);
+for (let i = 0; i < width; i++) {
+    resultMatrix[i] = new Array(length);
+}
+for(let i =0; i<width;++i){
+
+    for(let j =0; j<width;++j){
+        resultMatrix[i][j]=Math.random();
+    }
+}
 
 
 function createTable(){
@@ -8,16 +45,19 @@ function createTable(){
 
     
     table.style.borderCollapse = "collapse";
-    table.style.width = "auto";
-  //  table.style.border = "2px black solid";
+    table.style.width = "160px";
+    table.style.height= "160px";
+    table.style.border="solid";
+    //table.style.border = "2px black solid";
     let n = 3;
+    table.setAttribute("id","tab1");
     let tablebody = document.createElement("tbody");
     table.appendChild(tablebody);
 
     for(let i =0; i<n;++i){ // table row
         let tr = document.createElement("trow");
-        tr.style.borderCollapse = "collapse";
-     //   tr.style.border = "2px black solid";
+     //   tr.style.borderCollapse = "collapse";
+      //  tr.style.border = "2px black solid";
         for(let j =0; j<n; ++j){ // talbe data
             let td = document.createElement("td");
       
@@ -26,11 +66,10 @@ function createTable(){
           });
             td.setAttribute("id",i+","+j);
             td.style.backgroundColor ="white";
-          //  td.appendChild(input);
-            td.style.height = "40px";
-            td.style.width = "40px";
-            td.style.border = "2px black solid";
-         
+            td.style.height = "50px";
+            td.style.width = "50px";
+            td.style.border = "solid";
+            td.style.borderCollapse = "collapse";
             tr.appendChild(td); 
   
         }
@@ -44,7 +83,8 @@ function createTable(){
 
 function makeTurn(x,y){
     let td = document.getElementById(x+","+y);
-    if(turn ==0 && td.nodeValue != "black" && td.nodeValue!="blue"){
+
+    if(turn ==0 && resultMatrix[x][y] !=1&&gameOver ==0){
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "40");
         svg.setAttribute("height", "40");
@@ -60,9 +100,10 @@ function makeTurn(x,y){
         svg.appendChild(circle);
         td.appendChild(svg);
         turn =1;
-        td.setAttribute("nodevalue","black");
+  
+        resultMatrix[x][y] =1;
     }
-    else if(turn ==1 && td.nodeValue != "black" && td.nodeValue!="blue"){
+    else if(turn ==1&& resultMatrix[x][y] !=1 &&gameOver==0){
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "40");
         svg.setAttribute("height", "40");
@@ -78,6 +119,49 @@ function makeTurn(x,y){
         svg.appendChild(circle);
         td.appendChild(svg);
         turn =0;
-        td.setAttribute("nodevalue","black");
+      
+        resultMatrix[x][y] =2;
     }
+    checkWin();
+};
+
+function checkWin(){
+    for(let i =0; i<width;++i){
+        if(resultMatrix[i][0] ==resultMatrix[i][1] && resultMatrix[i][0] == resultMatrix[i][2]  ){
+            winCond(resultMatrix[i][0]);
+        }
+        if(resultMatrix[0][i] ==resultMatrix[1][i] && resultMatrix[0][i] == resultMatrix[2][i]  ){
+            winCond(resultMatrix[0][i]);
+        }
+
+    }
+    if(resultMatrix[1][1] ==resultMatrix[0][0] && resultMatrix[1][1] == resultMatrix[2][2]  ){
+        winCond(resultMatrix[1][1]);
+    }
+    let count = 0;
+    for(let i =0; i<width;++i){
+        for(let j =0; j<width;++j){
+            if(resultMatrix[i][j]!=1||resultMatrix[i][j]!=2){
+                break;
+            }
+            count+=1;
+        }
+    }
+    if(count>=9){
+       alert("tie");
+    }
+    
+
+};
+
+function winCond(x){
+    alert("player "+x+" won");
+    gameOver=1;
+    let b = document.createElement('button');
+    b.setAttribute("value","Click for new game");
+    b.addEventListener('click', function() { // function for piece movement
+        newGame();
+      });
+    b.setAttribute("id","NewButton");
+    document.getElementsByClassName("new")[0].appendChild(b);
 }
