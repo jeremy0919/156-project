@@ -2,6 +2,7 @@ function newGame(){
     let turn =0;
 let width =3;
 gameOver=0;
+count = 0;
 for (let i = 0; i < width; i++) {
     }
     for(let i =0; i<width;++i){
@@ -27,6 +28,7 @@ for (let i = 0; i < width; i++) {
 let gameOver =0;
 var turn =0;
 let width =3;
+let count = 0;
 let resultMatrix = new Array(width);
 for (let i = 0; i < width; i++) {
     resultMatrix[i] = new Array(length);
@@ -50,14 +52,14 @@ function createTable(){
     table.style.border="solid";
     //table.style.border = "2px black solid";
     let n = 3;
-    table.setAttribute("id","tab1");
+table.setAttribute("id","tab1");
     let tablebody = document.createElement("tbody");
     table.appendChild(tablebody);
 
     for(let i =0; i<n;++i){ // table row
         let tr = document.createElement("trow");
-     //   tr.style.borderCollapse = "collapse";
-      //  tr.style.border = "2px black solid";
+        //   tr.style.borderCollapse = "collapse";
+     //  tr.style.border = "2px black solid";
         for(let j =0; j<n; ++j){ // talbe data
             let td = document.createElement("td");
       
@@ -66,10 +68,10 @@ function createTable(){
           });
             td.setAttribute("id",i+","+j);
             td.style.backgroundColor ="white";
-            td.style.height = "50px";
+          td.style.height = "50px";
             td.style.width = "50px";
             td.style.border = "solid";
-            td.style.borderCollapse = "collapse";
+         td.style.borderCollapse = "collapse";
             tr.appendChild(td); 
   
         }
@@ -83,7 +85,7 @@ function createTable(){
 
 function makeTurn(x,y){
     let td = document.getElementById(x+","+y);
-
+    
     if(turn ==0 && resultMatrix[x][y] !=1&&gameOver ==0){
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "40");
@@ -100,7 +102,7 @@ function makeTurn(x,y){
         svg.appendChild(circle);
         td.appendChild(svg);
         turn =1;
-  
+        
         resultMatrix[x][y] =1;
     }
     else if(turn ==1&& resultMatrix[x][y] !=1 &&gameOver==0){
@@ -119,9 +121,10 @@ function makeTurn(x,y){
         svg.appendChild(circle);
         td.appendChild(svg);
         turn =0;
-      
+        
         resultMatrix[x][y] =2;
     }
+    count+=1;
     checkWin();
 };
 
@@ -138,17 +141,20 @@ function checkWin(){
     if(resultMatrix[1][1] ==resultMatrix[0][0] && resultMatrix[1][1] == resultMatrix[2][2]  ){
         winCond(resultMatrix[1][1]);
     }
-    let count = 0;
-    for(let i =0; i<width;++i){
-        for(let j =0; j<width;++j){
-            if(resultMatrix[i][j]!=1||resultMatrix[i][j]!=2){
-                break;
-            }
-            count+=1;
-        }
+    if(resultMatrix[1][1] ==resultMatrix[0][2] && resultMatrix[1][1] == resultMatrix[2][0]  ){
+        winCond(resultMatrix[1][1]);
     }
+
     if(count>=9){
        alert("tie");
+       gameOver=1;
+       let b = document.createElement('button');
+       b.setAttribute("value","Click for new game");
+       b.addEventListener('click', function() { // function for piece movement
+           newGame();
+         });
+       b.setAttribute("id","NewButton");
+       document.getElementsByClassName("new")[0].appendChild(b);
     }
     
 
@@ -157,6 +163,13 @@ function checkWin(){
 function winCond(x){
     alert("player "+x+" won");
     gameOver=1;
+    count =0;
+    let temp = "score"+x;
+    alert("temp is " + temp);
+   // let score = document.getElementById(temp);
+  // alert(score.innerHTML);
+
+   // score.item+=1;
     let b = document.createElement('button');
     b.setAttribute("value","Click for new game");
     b.addEventListener('click', function() { // function for piece movement
