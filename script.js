@@ -165,16 +165,15 @@ function winCond(x){
     gameOver=1;
     count =0;
     let temp = "score"+x;
-    alert("temp is " + temp);
-   // let score = document.getElementById(temp);
-  // alert(score.innerHTML);
+    let score = document.getElementById(temp);
+    score.innerHTML = parseInt(score.innerHTML) + 1;
 
    // score.item+=1;
-    let b = document.createElement('button');
-    b.setAttribute("value","Click for new game");
-    b.addEventListener('click', function() { // function for piece movement
-        newGame();
-      });
-    b.setAttribute("id","NewButton");
+   let b = document.createElement('button');
+   b.innerHTML = "Click for new game"; // set the button text
+   b.addEventListener('click', function() { // function for piece movement
+       newGame();
+   });
+   b.setAttribute("id","NewButton");
     document.getElementsByClassName("new")[0].appendChild(b);
 }
