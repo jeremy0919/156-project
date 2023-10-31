@@ -1,0 +1,12 @@
+{
+    "User": [
+        {
+            "name": "jeremy",
+            "gamesPlayed": 0,
+            "wins": 0,
+            "losses": 0,
+            "winRate": 0
+            
+        }
+    ]
+}
