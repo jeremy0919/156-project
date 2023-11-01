@@ -1,12 +1,17 @@
 <?php // start at log in page, log in page goes to selection of one or two player
 // Read the existing JSON file
-if(isset($_POST['submit'])){
-$json_file = 'database.json';
-$json_data = file_get_contents($json_file);
-$users = json_decode($json_data, true);
-foreach($users as $key =>$value){
-    echo"{$key} = {$value} <br>";
-}
+    if(isset($_POST['submit'])){
+    $json_file = 'database.json';
+    $json_data = file_get_contents($json_file);
+    $users = json_decode($json_data, true);
+    $name= trim($_POST['username']);
+ foreach($users as $key =>$value){ // iterates through data
+        if($value == $name){ 
+        echo"{$key} = {$value} <br>";
+        }
+    }
+ 
+    echo($name);
 }
 // Get data from the form
 
