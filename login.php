@@ -1,37 +1,23 @@
-<?php
+<?php // start at log in page, log in page goes to selection of one or two player
 // Read the existing JSON file
+if(isset($_POST['submit'])){
 $json_file = 'database.json';
 $json_data = file_get_contents($json_file);
 $users = json_decode($json_data, true);
-
-// Get data from the form
-if(isset($_POST['submit'])){
-    if($_POST['username'] != null){
-
-    $pokemon = $_POST['Pokemon'] ;
+foreach($users as $key =>$value){
+    echo"{$key} = {$value} <br>";
 }
+}
+// Get data from the form
 
-if($_POST['canEvolve'] != null && $_POST['weakTo'] != null&& $_POST['type'] != null&& $_POST['averageSize'] != null&& $_POST['shinyColor'] != null&& $_POST['evolution'] != null && $_POST['Pokemon'] != null){
-$new_pokemon = [
-    
-    'name' => $pokemon ,
-    'evolution' => $evolution,
-    'shinyColor' =>    $shinyColor ,
-    'averageSize' =>  $averageSize ,
-    'type' =>   $type,
-    'weakTo' =>  $weakTo ,
-    'canEvolve' =>  $canEvolve,
-    'img' =>   $img,
-];
-$users['user'][] = $user;
 
 // Encode the updated data back to JSON
-$updated_json = json_encode($users, JSON_PRETTY_PRINT);
+//$updated_json = json_encode($users, JSON_PRETTY_PRINT);
 
 // Write the updated JSON data back to the file
-file_put_contents($json_file, $updated_json);
-}
-}
+//file_put_contents($json_file, $updated_json);
+
+
 ?>
 
 <!DOCTYPE html>
