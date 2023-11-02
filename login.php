@@ -61,9 +61,9 @@ header('Location: myserver.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="background-image: url('wp7601179-retro-80s-arcade-wallpapers.jpg')">
 <form action="login.php" method="post">
-        <label>login:</label>
+        <label style = "color:white">login:</label>
         <input type="text" name="username"> <br>
         <input type="submit" name="submit" value="login"><br>
 </body>

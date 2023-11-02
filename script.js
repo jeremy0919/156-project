@@ -1,13 +1,15 @@
+
+window.onload=function(){//should work needs to bw fixed
 var httpRequest = new XMLHttpRequest();
 httpRequest.onreadystatechange = function(){
     if(httpRequest.readyState === XMLHttpRequest.DONE){
-  //      alert(httpRequest.status);
+        alert(httpRequest.status);
         if(httpRequest.status === 200){
             var data = JSON.parse(httpRequest.responseText); // object
-        
+            i = 1;
           //pass in location of username
-
-            document.getElementById("json-container1").innerHTML = data.user[i].name;
+            alert(data.user[i].name);
+            document.getElementsByClassName("table2").innerHTML = data.user[i].name;
             document.getElementById("gamesPlayed").innerHTML = data.user[i].gamesPlayed;
             document.getElementById("wins").innerHTML = data.user[i].wins;
             document.getElementById("losses").innerHTML = data.user[i].losses;
@@ -17,8 +19,7 @@ httpRequest.onreadystatechange = function(){
 };
 httpRequest.open('GET',"database.json",true) // path = local path
 httpRequest.send();
-
-
+}
 
 
 
@@ -104,7 +105,10 @@ table.setAttribute("id","tab1");
     
         
     }
-  
+    tablebody.style.paddingLeft = "50%"; // learn how to align in center
+    tablebody.style.padding = "50%";
+    tablebody.style.marginLeft = "50%";
+    tablebody.style.margin = "50%";
     document.getElementsByClassName("table")[0].appendChild(table);
 }
 

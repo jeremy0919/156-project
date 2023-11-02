@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html5>
     <head>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="style1.css">
         <script src="script.js">
         </script>
     </head>
@@ -10,7 +10,7 @@
         <form>
             <input type = "button" onclick="createTable()" value = "click me">
         </form>
-        <div class = "table"></div>
+      
 
         <div class = "new"></div>
 
@@ -41,7 +41,8 @@
             </tbody>
         </table>
 
-        <table id ="table2">
+        <table class ="table2">
+            <tbody>
                 <tr>
                     <td> player name:</td>
                     <td id ="playerName"></td>
@@ -62,6 +63,9 @@
                     <td>winRate</td>
                     <td id ="winRate1"></td>
                 </tr>
+            <tbody>
+
         </table>
+        <div class = "table" ></div>
     </body>
 </html5>

@@ -18,7 +18,7 @@ if (isset($_POST['submit1'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="background-image: url('wp7601179-retro-80s-arcade-wallpapers.jpg')">
 <form action="myserver.php" method="post">
 
         <input type="submit" name="submit" value="singlePlayer"><br>
