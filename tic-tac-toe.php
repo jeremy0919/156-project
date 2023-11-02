@@ -40,5 +40,28 @@
             </tr>
             </tbody>
         </table>
+
+        <table id ="table2">
+                <tr>
+                    <td> player name:</td>
+                    <td id ="playerName"></td>
+                </tr>
+                <tr>
+                    <td>gamesPlayed</td>
+                    <td id ="gamesPlayed"></td>
+                </tr>
+                <tr>
+                    <td>wins</td>
+                    <td id = "wins1" ></td>
+                </tr>
+                <tr>
+                    <td>losses</td>
+                    <td id ="losses1"></td>
+                </tr>
+                <tr>
+                    <td>winRate</td>
+                    <td id ="winRate1"></td>
+                </tr>
+        </table>
     </body>
 </html5>

@@ -1,3 +1,27 @@
+var httpRequest = new XMLHttpRequest();
+httpRequest.onreadystatechange = function(){
+    if(httpRequest.readyState === XMLHttpRequest.DONE){
+  //      alert(httpRequest.status);
+        if(httpRequest.status === 200){
+            var data = JSON.parse(httpRequest.responseText); // object
+        
+          //pass in location of username
+
+            document.getElementById("json-container1").innerHTML = data.user[i].name;
+            document.getElementById("gamesPlayed").innerHTML = data.user[i].gamesPlayed;
+            document.getElementById("wins").innerHTML = data.user[i].wins;
+            document.getElementById("losses").innerHTML = data.user[i].losses;
+            document.getElementById("winRate").innerHTML = data.user[i].winRate;
+        }
+    }
+};
+httpRequest.open('GET',"database.json",true) // path = local path
+httpRequest.send();
+
+
+
+
+
 function newGame(){
     let turn =0;
 let width =3;
