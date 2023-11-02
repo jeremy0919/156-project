@@ -1,4 +1,4 @@
-<?php // start at log in page, log in page goes to selection of one or two player
+<?php // start at log in page, log in page goes to selection of one or two player // start at log in page, log in page goes to selection of one or two player
 // Read the existing JSON file
 
 if (isset($_POST['submit'])) {
@@ -7,7 +7,7 @@ if (isset($_POST['submit'])) {
     $data = json_decode($json_data, true);
 
     $name = trim($_POST['username']);
-    
+    $check = 0;
     if (isset($data['User']) && is_array($data['User'])) {
         foreach ($data['User'] as $key => $user) {
             if ($user['name'] == $name) {
@@ -16,43 +16,35 @@ if (isset($_POST['submit'])) {
                 echo "{$key} = {$user['wins']} <br>";
                 echo "{$key} = {$user['losses']} <br>";
                 echo "{$key} = {$user['winRate']} <br>";
+                $check = 1;
             }
         }
     }
 
     echo $name;
-}
+if($check=0){
+$new_username = [
+    
+    "name"=>$name,
+    "gamesPlayed"=>0,
+    "wins"=> 0,
+    "losses"=>0,
+    "winRate"=> 0
+];
+$data['User'][] = $new_username;
 
-/*
-    if(isset($_POST['submit'])){
-    $json_file = 'database.json';
-    $json_data = file_get_contents($json_file);
-    $users = json_decode($json_data, true);
-    $name= trim($_POST['username']);
- foreach($users as $key =>$value){ // iterates through data
-        if($value == $name){ 
-        echo"{$key} = {$value} <br>";
-        }
-    }
- 
-    echo($name);
+// Encode the updated data back to JSON
+$updated_json = json_encode($data, JSON_PRETTY_PRINT);
+
+// Write the updated JSON data back to the file
+file_put_contents($json_file, $updated_json);
+}
+header('Location: myserver.php');
 }
 // Get data from the form
 
+//header('Location: lab8.php');
 
-$data = json_decode($jsonData, true);
-
-if (isset($data['User']) && is_array($data['User'])) {
-    $nameToSearch = "jeremy"; // Change this to the name you want to search for
-
-    foreach ($data['User'] as $user) {
-        $name = $user['name'];
-        if ($name == $nameToSearch) {
-            echo "{$name} <br>";
-        }
-    }
-}
-*/
 // Encode the updated data back to JSON
 //$updated_json = json_encode($users, JSON_PRETTY_PRINT);
 

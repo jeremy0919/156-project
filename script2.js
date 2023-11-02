@@ -42,7 +42,7 @@ for(let i =0; i<width;++i){
 
 
 function createTable(){
-
+  
     table = document.createElement('table');
 
     
@@ -64,8 +64,8 @@ table.setAttribute("id","tab1");
             let td = document.createElement("td");
       
         td.addEventListener('click', function() { // function for piece movement
+            
             makeTurn(i,j);
-        
           });
             td.setAttribute("id",i+","+j);
             td.style.backgroundColor ="white";
@@ -86,8 +86,8 @@ table.setAttribute("id","tab1");
 
 function makeTurn(x,y){
     let td = document.getElementById(x+","+y);
-    let temp = 0;
-    if(turn ==0 && resultMatrix[x][y] !=1&&gameOver ==0&&resultMatrix[x][y]!=2){
+    
+    if(turn ==0 && resultMatrix[x][y] !=1&&gameOver ==0){
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "40");
         svg.setAttribute("height", "40");
@@ -106,17 +106,7 @@ function makeTurn(x,y){
         
         resultMatrix[x][y] =1;
     }
-    count+=1;
-    if(checkWin()==true){
-        return;
-    }
-    while(turn ==1&&gameOver==0){
-        x = Math.random()*3; // computer algorithm :)
-        y=Math.random()*3;
-        x=Math.floor(x);
-        y=Math.floor(y);
-        td = document.getElementById(x+','+y);
-    if( resultMatrix[x][y] !=1 &&gameOver==0&&resultMatrix[x][y]!=2){
+    else if(turn ==1&& resultMatrix[x][y] !=1 &&gameOver==0){
         var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("width", "40");
         svg.setAttribute("height", "40");
@@ -132,51 +122,40 @@ function makeTurn(x,y){
         svg.appendChild(circle);
         td.appendChild(svg);
         turn =0;
-      
+        
         resultMatrix[x][y] =2;
     }
-    if(checkWin()==true){
-        return;
-    }
-}
-
     count+=1;
-
+    checkWin();
 };
 
 function checkWin(){
     for(let i =0; i<width;++i){
         if(resultMatrix[i][0] ==resultMatrix[i][1] && resultMatrix[i][0] == resultMatrix[i][2]  ){
             winCond(resultMatrix[i][0]);
-            return true;
         }
         if(resultMatrix[0][i] ==resultMatrix[1][i] && resultMatrix[0][i] == resultMatrix[2][i]  ){
             winCond(resultMatrix[0][i]);
-            return true;
         }
 
     }
     if(resultMatrix[1][1] ==resultMatrix[0][0] && resultMatrix[1][1] == resultMatrix[2][2]  ){
         winCond(resultMatrix[1][1]);
-        return true;
     }
     if(resultMatrix[1][1] ==resultMatrix[0][2] && resultMatrix[1][1] == resultMatrix[2][0]  ){
         winCond(resultMatrix[1][1]);
-        return true;
     }
 
     if(count>=9){
        alert("tie");
        gameOver=1;
-       turn =0;
        let b = document.createElement('button');
-       b.innerHTML = "Click for new game";
+       b.setAttribute("value","Click for new game");
        b.addEventListener('click', function() { // function for piece movement
            newGame();
          });
        b.setAttribute("id","NewButton");
        document.getElementsByClassName("new")[0].appendChild(b);
-       return true;
     }
     
 
@@ -186,7 +165,6 @@ function winCond(x){
     alert("player "+x+" won");
     gameOver=1;
     count =0;
-    turn =0;
     let temp = "score"+x;
     let score = document.getElementById(temp);
     score.innerHTML = parseInt(score.innerHTML) + 1;
@@ -199,5 +177,4 @@ function winCond(x){
    });
    b.setAttribute("id","NewButton");
     document.getElementsByClassName("new")[0].appendChild(b);
-    
 }
