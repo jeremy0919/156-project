@@ -10,10 +10,10 @@
         },
         {
             "name": "john",
-            "gamesPlayed": 0,
-            "wins": 0,
-            "losses": 0,
-            "winRate": 0
+            "gamesPlayed": 1,
+            "wins": 2,
+            "losses": 2,
+            "winRate": 100
             
         }
     ]
