@@ -138,6 +138,7 @@ function makeTurn(x,y){
     if(checkWin()==true){
         return;
     }
+    setTimeout(1000);
     while(turn ==1&&gameOver==0){
         x = Math.random()*3; // computer algorithm :)
         y=Math.random()*3;
