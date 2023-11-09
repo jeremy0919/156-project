@@ -1,0 +1,10 @@
+{
+    "name": "jeremiah/156-project",
+    "description": "a tic tac toe game that requires sockets",
+    "type": "project",
+    "require": {
+        "php-util/autoload-search": "dev-master"
+    },
+    "license": "na",
+    "minimum-stability": "dev"
+}
