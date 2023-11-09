@@ -5,7 +5,7 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Http\HttpServer;
-
+use Ratchet\IoServer;
 class TicTacToeServer implements MessageComponentInterface {
     protected $clients;
 
