@@ -7,6 +7,8 @@ HEADER = 64
 PORT = 60060 #ports over 4000 (sike, my ports are up to 6k) are typically inactive or unused
 #SERVER = '192.168.1.22"
 SERVER = socket.gethostbyname(socket.gethostname())
+SERVER.bind(('192.168.1.171', 60060))
+
 ADDR = (SERVER, PORT)
 FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
