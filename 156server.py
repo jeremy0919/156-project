@@ -4,10 +4,10 @@ import time
 from tkinter import *
 
 HEADER = 64
-PORT = 7000 #ports over 4000 (sike, my ports are up to 6k) are typically inactive or unused
+PORT = 10000 #ports over 4000 (sike, my ports are up to 6k) are typically inactive or unused
 #SERVER = '192.168.1.22"
 #SERVER = socket.gethostbyname(socket.gethostname())
-SERVER = 'localhost'
+SERVER = '192.168.1.171'
 
 #SERVER.bind(('192.168.1.171', 60060))
 
