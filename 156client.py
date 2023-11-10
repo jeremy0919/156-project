@@ -5,7 +5,7 @@ HEADER = 64 #header is the same
 PORT = 60061 #ports have to match
 SERVER = "localhost" #"192.168.56.1"  #client server is this
 ADDR = (SERVER, PORT)
-FORMAT = 'uft-8'
+FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 
 

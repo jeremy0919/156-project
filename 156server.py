@@ -8,12 +8,16 @@ PORT = 60060 #ports over 4000 (sike, my ports are up to 6k) are typically inacti
 #SERVER = '192.168.1.22"
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
-FORMAT = 'uft-8'
+FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
-
+try:   
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind(ADDR)
+except socket.error as e:
+    print(f"Error creating/connecting socket: {e}")
+    exit(1)
+    
 def handle_client(conn, addr):
     print("[NEW CONNECTION]{addr} connected.") 
 
