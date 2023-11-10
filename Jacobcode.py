@@ -15,7 +15,12 @@ def winner(player): # X = 1 || O = 2 || N = Tie
     my_button31.config(state='disabled')
     my_button32.config(state='disabled')
     my_button33.config(state='disabled')
-    # Fix Winning Statement
+    for client in clients:
+        try:
+            client.send(f"Winner:{player}".encode())
+        except socket.error as e:
+            print(f"Error sending data to client: {e}")
+
     if player == 'N': player_statement = "Tie Game"
     elif player == 'X': player_statement = "Player 1 Wins"
     else: player_statement = "Player 2 Wins"
@@ -76,6 +81,11 @@ def press(num):
         winner(player)
     # Else Change Chosen
     else: chosen()
+    for client in clients:
+        try:
+            client.send(f"{num}:{player}".encode())
+        except socket.error as e:
+            print(f"Error sending data to client: {e}")
 
 def new_game():
     # Activate Buttons & Clear Board
@@ -89,6 +99,7 @@ def new_game():
     my_button32.config(state='active', text = "")
     my_button33.config(state='active', text = "")
     # Reset Player
+
     global player
     player = 'X'
     # Will print error First time
