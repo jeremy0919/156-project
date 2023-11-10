@@ -1,3 +1,25 @@
+const socket = new WebSocket('ws://your-server-url:port'); // will likely need xamp for server
+
+socket.onopen = () => {
+    // Handle the connection to the server.
+};
+
+socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'move') {
+        // Handle the move received from the server
+        const { x, y, player } = data;
+        makeTurn(x, y, player);
+    }
+};
+
+// Initialize the game on page load
+newGame();
+
+
+
+
+
 function newGame(){
     let turn =0;
 let width =3;
