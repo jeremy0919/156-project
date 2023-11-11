@@ -2,21 +2,17 @@ import socket
 import threading
 import time
 from tkinter import *
-
 HEADER = 64
-PORT = 10000 #ports over 4000 (sike, my ports are up to 6k) are typically inactive or unused
-#SERVER = '192.168.1.22"
-#SERVER = socket.gethostbyname(socket.gethostname())
+PORT = 10000
 SERVER = '192.168.1.171'
-
-#SERVER.bind(('192.168.1.171', 60060))
 
 ADDR = (SERVER, PORT)
 FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 clients = []
-addresses = []  
-try:   
+addresses = []
+
+try:
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(ADDR)
 except socket.error as e:
@@ -24,18 +20,18 @@ except socket.error as e:
     exit(1)
 
 def handle_client(conn, addr):
-    print("[NEW CONNECTION]{addr} connected.") 
+    print(f"[NEW CONNECTION] {addr} connected.")
 
     connected = True
     while connected:
         msg_length = conn.recv(HEADER).decode(FORMAT)
         if msg_length:
-            msg_length = int (msg_length)
+            msg_length = int(msg_length)
             msg = conn.recv(msg_length).decode(FORMAT)
             if msg == DISCONNECT_MESSAGE:
                 connected = False
             print(f"[{addr}] {msg}")
-    
+
     conn.close()
 
 def start():
@@ -43,10 +39,11 @@ def start():
     print(f"[LISTENING] Server is listening on {SERVER}")
     while True:
         conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args = (conn,addr))
+        clients.append(conn)
+        addresses.append(addr)
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount()-1}")
-
+        print(f"[ACTIVE CONNECTIONS] {len(clients)}")
 
 print("[STARTING] server is starting")
 start()
