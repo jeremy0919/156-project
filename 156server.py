@@ -64,11 +64,6 @@ def winner(player): # X = 1 || O = 2 || N = Tie
     my_button31.config(state='disabled')
     my_button32.config(state='disabled')
     my_button33.config(state='disabled')
-    for client in clients:
-        try:
-            client.send(f"Winner:{player}".encode())
-        except socket.error as e:
-            print(f"Error sending data to client: {e}")
 
     if player == 'N': player_statement = "Tie Game"
     elif player == 'X': player_statement = "Player 1 Wins"
@@ -77,6 +72,11 @@ def winner(player): # X = 1 || O = 2 || N = Tie
     global winner_label 
     winner_label = Label(text=player_statement, font =('ariel', 22))
     winner_label.grid(row = 1, column = 1, rowspan = 3, columnspan = 3)
+    for client in clients:
+        try:
+            client.send(f"Winner:{player}".encode())
+        except socket.error as e:
+            print(f"Error sending data to client: {e}")
 
 def checkFull():
     # Return False if at least one is empty
