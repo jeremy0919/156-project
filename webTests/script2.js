@@ -1,17 +1,4 @@
-const socket = new WebSocket('ws://your-server-url:port'); // will likely need xamp for server
-
-socket.onopen = () => {
-    // Handle the connection to the server.
-};
-
-socket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    if (data.type === 'move') {
-        // Handle the move received from the server
-        const { x, y, player } = data;
-        makeTurn(x, y, player);
-    }
-};
+var socket = io.connect('http://' + document.domain + ':' + location.port);
 
 // Initialize the game on page load
 newGame();
@@ -149,6 +136,7 @@ function makeTurn(x,y){
     }
     count+=1;
     checkWin();
+    socket.emit('move', { x: x, y: y });
 };
 
 function checkWin(){
@@ -200,3 +188,10 @@ function winCond(x){
    b.setAttribute("id","NewButton");
     document.getElementsByClassName("new")[0].appendChild(b);
 }
+
+socket.on('move', function(data) {
+    // Handle the move received from the server
+    console.log('Received move from the server:', data);
+    
+    // Update the game state or perform any necessary actions
+});

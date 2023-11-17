@@ -4,7 +4,7 @@ from tkinter import *
 
 HEADER = 64 #header is the same
 PORT = 10000 #ports have to match
-SERVER = "192.168.1.171" #"192.168.56.1"  #client server is this
+SERVER = "10.62.77.244" #"192.168.56.1"  #client server is this
 ADDR = (SERVER, PORT)
 FORMAT = 'UTF-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
@@ -20,6 +20,8 @@ except socket.error as e:
 def send(msg):
     message = msg.encode(FORMAT)
     msg_length = len(message)
+    client.send(msg_length.to_bytes(HEADER, byteorder='big'))
+    client.send(message)
 
 
 

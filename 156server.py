@@ -4,7 +4,7 @@ import time
 from tkinter import *
 HEADER = 64
 PORT = 10000
-SERVER = '192.168.1.171'
+SERVER = '10.62.77.244'
 
 ADDR = (SERVER, PORT)
 FORMAT = 'UTF-8'
@@ -35,7 +35,7 @@ def handle_client(conn, addr):
     conn.close()
 
 def start():
-    server.listen()
+    server.listen(2)
     print(f"[LISTENING] Server is listening on {SERVER}")
     while True:
         conn, addr = server.accept()
