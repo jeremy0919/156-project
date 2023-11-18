@@ -24,7 +24,8 @@ class TicTacToe:
     def validMove(self, move, player):
         return 1 <= move <= 9 and self.board[move] == ' '
     def makeMove(self, move, player):
-        self.board[move] = self.player_symbol[player - 1]
+        self.player_symbol = 'X' if player == 1 else 'O'
+      #  self.board[move] = self.player_symbol[player - 1]
         self.player = self.go2OthPlayer() 
     def isWinner(self, player):                        # check if player has won
         for combo in self.win_combos:
@@ -38,8 +39,19 @@ class TicTacToe:
     def restart(self):
         self.board = [' ' for _ in range(9)]
         self.player = 0
-    def show(self):
+   # def show(self):
         #print("-------------")
+    #    print("\n\n")
+     #   for i in range(0, 9, 3):
+    #        row = " | ".join(self.board[i:i + 3])
+     #       print(f"  {row}  ")
+      #      if i < 6:
+      #          print("-------------")
+    def update_board(self, move, player):
+        if 0 <= move < 9 and self.board[move] == ' ':
+            self.board[move] = self.player_symbol[player - 1]
+
+    def show_updated_board(self):
         print("\n\n")
         for i in range(0, 9, 3):
             row = " | ".join(self.board[i:i + 3])
