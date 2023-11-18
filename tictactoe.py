@@ -21,12 +21,18 @@ class TicTacToe:
     def go2OthPlayer(self):
         return 1 if self.player == 0 else 0            # return the other player
 
-    def validMove(self, move, player):
-        return 1 <= move <= 9 and self.board[move] == ' '
+    def validMove(self, move):
+        return 0 <= move < 9 and self.board[move] == ' '
+
     def makeMove(self, move, player):
-        self.player_symbol = 'X' if player == 1 else 'O'
-      #  self.board[move] = self.player_symbol[player - 1]
-        self.player = self.go2OthPlayer() 
+        if self.validMove(move):
+            self.player_symbol = 'X' if player == 1 else 'O'
+            self.board[move] = self.player_symbol
+            self.player = self.go2OthPlayer()
+        else:
+            print("Invalid move!")
+    def help():
+        print("How do yuo not know how to play tictactoe")
     def isWinner(self, player):                        # check if player has won
         for combo in self.win_combos:
             if all(self.board[i] == self.player_symbol[player - 1] for i in combo): # check if player has all 3 in a row
@@ -58,3 +64,7 @@ class TicTacToe:
             print(f"  {row}  ")
             if i < 6:
                 print("-------------")
+    def show():
+        print("its tic tac toe yall are really keeping score ")
+    def showWinner():
+        print("you really cant see who got three in a row smhhh")

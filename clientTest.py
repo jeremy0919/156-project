@@ -8,13 +8,13 @@ playerNum = int(input('Enter player tag (1 or 2)'))  # Get the player number
 
 
 class TicTacToeGUI(tk.Tk):
-    def __init__(self, client_socket):
+    def __init__(self, client_socket, player_num):
         super().__init__()
         self.title("Tic Tac Toe")
         self.geometry("300x300")
 
         self.client_socket = client_socket
-        self.player_symbol = 'X' if playerNum == 1 else 'O'
+        self.player_symbol = 'X' if player_num == 1 else 'O'
         self.game_over = False
 
         self.buttons = []
@@ -39,10 +39,17 @@ class TicTacToeGUI(tk.Tk):
         self.receive_thread = threading.Thread(target=self.receive_messages)
         self.receive_thread.start()
 
-    def make_move(self, move):
-        if not self.game_over:
-            data = f'MOVE {move + 1}'  # Adding 1 to move to convert to 1-indexed for server
-            self.client_socket.send(str.encode(data))
+    def make_move(self, index):
+        # Check if the game is over or the button is already clicked
+        if self.game_over or self.buttons[index]["text"] != "":
+            return
+
+        # Update the button text with the player's symbol
+        self.buttons[index]["text"] = self.player_symbol
+
+        # Send the move to the other player through the network
+        move_message = f"MOVE {index} {self.player_symbol}"
+        self.client_socket.send(move_message.encode())
 
     def restart_game(self):
         data = 'RESTART'
@@ -87,13 +94,9 @@ if __name__ == "__main__":
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((host, 55555))
 
-    if playerNum == 1:
-        playerNum = 1
-    else:
-        playerNum = 2
     print(f"You are player {playerNum}\n")
 
-    gui = TicTacToeGUI(client_socket)
+    gui = TicTacToeGUI(client_socket, playerNum)
     gui.mainloop()
 
     client_socket.send(str.encode('QUIT'))

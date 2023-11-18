@@ -13,6 +13,7 @@ def handle_client(client, player, game):
     while True:
         try:
             data = client.recv(1024).decode('utf-8')
+            print(f"Sending data to server: {data}")
             if data == 'QUIT':
                 break
             elif data == 'RESTART':
@@ -23,21 +24,26 @@ def handle_client(client, player, game):
                 game.help()
             elif data == 'PLAY':
                 game.play(player)
-            else:
-                client.send(str.encode('Invalid input!'))
-
-            if player == game.player and data.startswith('MOVE'):
-                move_str, move_value = data.split(' ')
+            elif player == game.player and data.startswith('MOVE'):
+                move_str, move_value, move_symbol = data.split(' ')
+                
                 if move_str == 'MOVE':
                     move = int(move_value)
-                    if game.validMove(move, player):
+                    if game.validMove(move):
                         game.makeMove(move, player)
                         game.show_updated_board() 
+
                         if game.isWinner(player):
                             client.send(str.encode('You won!'))
+                            game_over_message = f"Player {player} won!"
+                            print(game_over_message)
+                        #    broadcast(game_over_message)
                             break
                         elif game.isBoardFull():
                             client.send(str.encode('You tied!'))
+                            game_over_message = "The game is a tie!"
+                            print(game_over_message)
+                          #  broadcast(game_over_message)
                             break
                         else:
                             game.go2OthPlayer()
