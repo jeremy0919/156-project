@@ -36,13 +36,13 @@ class TicTacToe:
         return 1 if self.player == 0 else 0            # return the other player
 
     def validMove(self, move, player):
-        return 1 <= move <= 9 and self.board[move] == ' '
+        return 1 <= move <= 9 and self.board[move-1] == ' '
     def makeMove(self, move, player):
         self.board[move - 1] = self.player_symbol[player - 1]
         self.player = self.go2OthPlayer() 
     def isWinner(self, player):                        # check if player has won
         for combo in self.win_combos:
-            if all(self.board[i] == self.player_symbol[player - 1] for i in combo): # check if player has all 3 in a row
+            if all(self.board[i-1] == self.player_symbol[player - 1] for i in combo): # check if player has all 3 in a row
                 return True
         return False
 
