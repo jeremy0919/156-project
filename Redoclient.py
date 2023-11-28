@@ -22,11 +22,11 @@ def inGame(client_socket):
                 continue
             else:
                 data = f'MOVE {move}'
-                print(f'Sending data: {data}')
+                #print(f'Sending data: {data}')
                 client_socket.send(str.encode(data))
                 break
         except ValueError:
-            print('Invalid move! Please enter a number between 1 and 9')
+            print('Invalid move! Please enter a number between 0 and 8')
             continue
 
 if __name__ == "__main__":
@@ -36,9 +36,11 @@ if __name__ == "__main__":
                # Receive the player number
     if playerNum == 1:                                                  # If the player is 1
         playerNum = 1                                                   # Set the player number to 2
+        print("")
     else:                                                               # Else
         playerNum = 2             
     print(f"You are player {playerNum}\n")                              # Print the player number
+    print("Second Player to enter goes first (Be polite ;p)")
 
     thread = threading.Thread(target=rec_message, args=(client_socket,)) # Create a thread for the client
     thread.start()                                                     # Start the thread
