@@ -26,7 +26,10 @@ class TicTacToe:
 
     def makeMove(self, move, player):
         if self.validMove(move):
-            self.player_symbol = 'X' if player == 1 else 'O'
+            if player == 1:
+                 self.player_symbol = 'X'
+            elif player ==0:
+                 self.player_symbol = 'O'
             self.board[move] = self.player_symbol
             self.player = self.go2OthPlayer()
         else:

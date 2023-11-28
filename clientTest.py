@@ -76,6 +76,7 @@ class TicTacToeGUI(tk.Tk):
                     _, move_value = message.split(' ')
                     move = int(move_value) - 1  # Subtracting 1 to convert to 0-indexed for GUI
                     self.update_board(move)
+                    self.make_move(self,move,self.player_symbol)
                 elif message == 'Invalid move!':
                     messagebox.showinfo("Invalid Move", "Please make a valid move.")
                 elif message == "Not your turn!":
