@@ -17,7 +17,7 @@ def inGame(client_socket):
     while True:
         try:
             move = int(input('Move: '))                 #prints move and waits for input
-            if move < 1 or move > 9:
+            if move < 1 or move > 9: #doesnt allow us to use any server functions, ie help show restart, need to either remove those or change this
                 print('Invalid move!')                  #if move is invalid do nothing
                 continue
             else:
