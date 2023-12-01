@@ -45,8 +45,8 @@ class TicTacToe:
             if all(self.board[i-1] == self.player_symbol[player - 1] for i in combo): # check if player has all 3 in a row
                 return True
         return False
-    def help():
-        print("Try and get a straight line of your symbol")
+    def help(self):
+        return "Try and get a straight line of your symbol"
     def isBoardFull(self):
         return all(i != ' ' for i in self.board)         # check if board is full
     
@@ -60,3 +60,8 @@ class TicTacToe:
             print(f"  {row}  ")
             if i < 6:
                 print("-------------")
+    def show2(self):
+        return '\n\n'.join([
+            '  ' + '  |  '.join(self.board[i:i + 3]) + '  ' + ('\n-------------' if i < 6 else '')
+            for i in range(0, 9, 3)
+        ])
