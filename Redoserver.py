@@ -12,21 +12,22 @@ def handle_client (client, player, game):
     while True:
         try:
             data = client.recv(1024).decode('utf-8')                            #recieves data sent over connection, max of 1024 bytes of data, decodes using utf-8 to convert into unicode string
-            if data == 'QUIT':                                                  # If the client wants to quit
+            
+            if data.startswith('QUIT'):                                                  # If the client wants to quit
                 break
-            elif data == 'RESTART':                                             # If the client wants to restart
+            elif data.startswith('RESTART'):                                             # If the client wants to restart
                 game.restart()
-            elif data == 'SHOW':                                                # If the client wants score board
-                game.show()
-            elif data == 'HELP':                                                # If the client wants help navigating
+            elif data.startswith('SHOW'):                                                # If the client wants score board
+                client.send(str.encode(game.show())) #idk if this will work
+            elif data.startswith('HELP'):                                                # If the client wants help navigating
                 game.help()
-            elif data == 'PLAY':                                                # If the client wants to start the game
+            elif data.startswith('PLAY'):                                                # If the client wants to start the game
                 game.play(player)
-            else:
-                client.send(str.encode('Your turn is over. Next Player!'))
+            else: # need to put this somewhere else so it cant send this string, you won/invalid move in the same turn
+                client.send(str.encode('Your turn is over. \n Its player {player}s turn now!'))
         
             if player == game.player and data.startswith('MOVE'):              # If it is the player's turn
-                move_str, move_value = data.split(' ')                         # splits data being recieved into string and the value
+                move_str, move_value = data.split(' ')                  # splits data being recieved into string and the value
                 if move_str == 'MOVE':                                         # If the client wants to make a move
                     move = int(move_value)                                     # sets var move to move int from data
                     if game.validMove(move, player):                           # checks if move is valid

@@ -16,10 +16,16 @@ def rec_message(client_socket):
 def inGame(client_socket):
     while True:
         try:
-            move = int(input('Move: '))                 #prints move and waits for input
-            if move < 1 or move > 9: #doesnt allow us to use any server functions, ie help show restart, need to either remove those or change this
-                print('Invalid move!')                  #if move is invalid do nothing
+            temp = (input('Move: '))                 #prints move and waits for input
+            move = int(temp)
+            if(temp == "HELP" or temp == "RESTART" or temp == "SHOW" or temp =="QUIT"):
+                data = f'{temp}'
+                client_socket.send(str.encode(data))
+                break
+            elif move < 1 or move > 9: #doesnt allow us to use any server functions, ie help show restart, need to either remove those or change this
+                print('Invalid move! \n')                  #if move is invalid do nothing
                 continue
+            
             else:
                 data = f'MOVE {move}'                   #if move is valid ties MOVE with input so server knows its a move command
                 #print(f'Sending data: {data}')
