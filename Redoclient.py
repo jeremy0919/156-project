@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-#host = socket.gethostbyname(socket.gethostname())
+host = socket.gethostbyname(socket.gethostname()) #comment out if not using same computer to host and play
 playerNum = int(input('Enter player tag (1 or 2)'))
 
 def rec_message(client_socket):
@@ -14,11 +14,13 @@ def rec_message(client_socket):
          #   if message.startswith('Tic Tac Toe!'): # too much time trying to get to print right 
               #  print("Move:", end="")  # Print "Move:" only when it's the current player's turn
         if message.startswith('You won!') or message.startswith('You tied!'):
-          #  print(message)
-            break
+            print("type restart to restart or quit to exit")
+        if(message.startswith('game is restarting')):
+            print('Make your move:')
+
 
 def inGame(client_socket):
-    time.sleep(.2)
+    time.sleep(.2) #neccisary if using input text but print statements often overlap input text
     while True:
         try:
          
@@ -30,7 +32,7 @@ def inGame(client_socket):
             except ValueError:
                 pass
 
-            if temp.upper() in ["HELP", "RESTART", "SHOW", "QUIT"]:
+            if temp.upper() in ["HELP", "RESTART", "SHOW", "QUIT"]:  #for some reason upper() does not work
                 data = f'{temp}'
                 client_socket.send(str.encode(data))
                 break
@@ -48,7 +50,7 @@ def inGame(client_socket):
 
 if __name__ == "__main__":
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    host = "192.168.1.171"
+    #host = "192.168.1.171" #modify based off of host server IP
     client_socket.connect((host, 55555))
 
     if playerNum == 1:

@@ -15,11 +15,21 @@ def handle_client(client, player, game, clients_lock):
 
 
             if data.startswith('QUIT'):                                                  # If the client wants to quit
+                for other_client in clients:                                            # broadcasts to all clients  
+                    try:
+                        client.send(str.encode("QUITTING")) 
+                    except:
+                        pass
                 break
             elif data.startswith('RESTART'):                                             # If the client wants to restart
                 game.restart()
+                for other_client in clients:                                            # broadcasts to all clients  
+                    try:
+                        client.send(str.encode("game is restarting")) 
+                    except:
+                        pass
             elif data.startswith('SHOW'):                                                # If the client wants score board
-                client.send(str.encode(game.show2())) #idk if this will work
+                client.send(str.encode(game.show2())) #sends to only one client
             elif data.startswith('HELP'):                                                # If the client wants help navigating
                 client.send(str.encode(game.help()))
             elif data.startswith('PLAY'):                                                # If the client wants to start the game
@@ -43,8 +53,8 @@ def handle_client(client, player, game, clients_lock):
                                     except:
                                         # Handle potential disconnection
                                         pass
-                            client.send(str.encode(f'You won! \n {message}'))
-                            break
+                            client.send(str.encode(f'You won! \n'))
+                       #     break
                         elif game.isBoardFull():
                             message = game.show2()
                             for other_client in clients:                                            # broadcasts to all clients
@@ -54,8 +64,8 @@ def handle_client(client, player, game, clients_lock):
                                     except:
                                         # Handle potential disconnection
                                         pass
-                            client.send(str.encode(f'You tied! \n {message}'))
-                            break
+                            client.send(str.encode(f'You tied! \n'))
+                         #   break
                         else:
                             game.go2OthPlayer()   
                             with clients_lock:                                                          #not entirely sure
