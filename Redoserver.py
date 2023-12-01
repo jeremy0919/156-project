@@ -36,10 +36,24 @@ def handle_client(client, player, game, clients_lock):
                         game.show()                                            # prints the board in the console with the move
                         if game.isWinner(player):
                             message = game.show2()
+                            for other_client in clients:                                            # broadcasts to all clients
+                                  #  print(other_client)
+                                    try:
+                                        other_client.send(str.encode(message))                             # whats sent on one client dispalys on the other
+                                    except:
+                                        # Handle potential disconnection
+                                        pass
                             client.send(str.encode(f'You won! \n {message}'))
                             break
                         elif game.isBoardFull():
                             message = game.show2()
+                            for other_client in clients:                                            # broadcasts to all clients
+                                 #   print(other_client)
+                                    try:
+                                        other_client.send(str.encode(message))                             # whats sent on one client dispalys on the other
+                                    except:
+                                        # Handle potential disconnection
+                                        pass
                             client.send(str.encode(f'You tied! \n {message}'))
                             break
                         else:

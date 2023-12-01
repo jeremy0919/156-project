@@ -2,7 +2,7 @@ import socket
 import threading
 import time
 
-host = socket.gethostbyname(socket.gethostname())
+#host = socket.gethostbyname(socket.gethostname())
 playerNum = int(input('Enter player tag (1 or 2)'))
 
 def rec_message(client_socket):
@@ -14,7 +14,7 @@ def rec_message(client_socket):
          #   if message.startswith('Tic Tac Toe!'): # too much time trying to get to print right 
               #  print("Move:", end="")  # Print "Move:" only when it's the current player's turn
         if message.startswith('You won!') or message.startswith('You tied!'):
-            print(message)
+          #  print(message)
             break
 
 def inGame(client_socket):
@@ -22,7 +22,7 @@ def inGame(client_socket):
     while True:
         try:
          
-            temp = input()
+            temp = input()          
             move = None
 
             try:
@@ -48,6 +48,7 @@ def inGame(client_socket):
 
 if __name__ == "__main__":
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    host = "192.168.1.171"
     client_socket.connect((host, 55555))
 
     if playerNum == 1:
