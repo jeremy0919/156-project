@@ -35,9 +35,9 @@ class TicTacToe:
     def go2OthPlayer(self):
         return 1 if self.player == 0 else 0            # return the other player
 
-    def validMove(self, move, player):
+    def validMove(self, move, player):                  #checks if move is valid ie valid input and not used board space
         return 1 <= move <= 9 and self.board[move-1] == ' '
-    def makeMove(self, move, player):
+    def makeMove(self, move, player):                   #makes move and updates whose turn it is
         self.board[move - 1] = self.player_symbol[player - 1]
         self.player = self.go2OthPlayer() 
     def isWinner(self, player):                        # check if player has won
@@ -45,15 +45,15 @@ class TicTacToe:
             if all(self.board[i-1] == self.player_symbol[player - 1] for i in combo): # check if player has all 3 in a row
                 return True
         return False
-
+    def help():
+        print("Try and get a straight line of your symbol")
     def isBoardFull(self):
         return all(i != ' ' for i in self.board)         # check if board is full
     
-    def restart(self):
+    def restart(self):                                  #restarts the game by clearing the input values and resetting player
         self.board = [' ' for _ in range(10)]
         self.player = 0
-    def show(self):
-        #print("-------------")
+    def show(self):                                     #prints basic text example of the board
         print("\n\n")
         for i in range(0, 9, 3):
             row = " | ".join(self.board[i:i + 3])

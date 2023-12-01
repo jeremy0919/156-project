@@ -5,7 +5,7 @@ import threading
 host = socket.gethostbyname(socket.gethostname()) # Get the host name
 playerNum = int(input('Enter player tag (1 or 2)')) # Get the player number
 def rec_message(client_socket):
-    while True:
+    while True:                                         
         message = client_socket.recv(1024).decode('utf-8') # Receive the message
         print(message)                                     # Print the message
         if message == 'You won!' or message == 'You tied!': # If the game is over
@@ -16,17 +16,17 @@ def rec_message(client_socket):
 def inGame(client_socket):
     while True:
         try:
-            move = int(input('Move: '))
+            move = int(input('Move: '))                 #prints move and waits for input
             if move < 1 or move > 9:
-                print('Invalid move!')
+                print('Invalid move!')                  #if move is invalid do nothing
                 continue
             else:
-                data = f'MOVE {move}'
+                data = f'MOVE {move}'                   #if move is valid ties MOVE with input so server knows its a move command
                 #print(f'Sending data: {data}')
                 client_socket.send(str.encode(data))
                 break
         except ValueError:
-            print('Invalid move! Please enter a number between 0 and 8')
+            print('Invalid move! Please enter a number between 0 and 9')
             continue
 
 if __name__ == "__main__":
