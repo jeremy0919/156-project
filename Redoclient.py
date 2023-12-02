@@ -1,9 +1,18 @@
 import socket
 import threading
 import time
+import random
 
 host = socket.gethostbyname(socket.gethostname()) #comment out if not using same computer to host and play
-playerNum = int(input('Enter player tag (1 or 2)'))
+while(True):
+    Gamemode = input("S for Single player or M for multiPlayer")
+    if(Gamemode == "S"):
+        print("do something")
+        playerNum = 1; #auto sets playernum to one so playernum 2 can be hardcoded as computer
+        break
+    if(Gamemode=="M"):
+        playerNum = int(input('Enter player tag (1 or 2)'))
+        break
 
 def rec_message(client_socket):
     while True:
@@ -17,7 +26,40 @@ def rec_message(client_socket):
             print("type restart to restart or quit to exit")
         if(message.startswith('game is restarting')):
             print('Make your move:')
+        while(message.endswith('CPU')): # in theory when it recieves a message back that ends in cpu
+            loc = random.randint(1, 9) # keeps sending messages for random moves
+            data = f'SMOVE {loc} Made by player {2}' #on behalf of player 2 to server
+            client_socket.send(str.encode(data))
 
+
+def inGame1(client_socket):
+    time.sleep(.2) #neccisary if using input text but print statements often overlap input text
+    while True:
+        try:
+         
+            temp = input()          
+            move = None
+
+            try:
+                move = int(temp)
+            except ValueError:
+                pass
+
+            if temp.upper() in ["HELP", "RESTART", "SHOW", "QUIT"]:  #for some reason upper() does not work
+                data = f'{temp}'
+                client_socket.send(str.encode(data))
+                break
+            elif move is not None and 1 <= move <= 9:
+                data = f'SMOVE {move} Made by player {playerNum}'
+                client_socket.send(str.encode(data))
+                break
+            else:
+                print('Invalid move! \n')
+                continue
+
+        except ValueError:
+            print('Invalid move! Please enter a number between 1 and 9')
+            continue
 
 def inGame(client_socket):
     time.sleep(.2) #neccisary if using input text but print statements often overlap input text
@@ -60,10 +102,14 @@ if __name__ == "__main__":
         playerNum = 2
 
     print(f"You are player {playerNum}\n")
-    print("Second Player to enter goes first (Be polite ;p)")
+    if(Gamemode == "M"):
+        print("Second Player to enter goes first (Be polite ;p)")
 
     thread = threading.Thread(target=rec_message, args=(client_socket,))
     thread.start()
 
     while True:
-        inGame(client_socket)
+        if(Gamemode == "S"):
+            inGame1(client_socket)
+        if(Gamemode == "M"):
+            inGame(client_socket)

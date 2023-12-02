@@ -1,7 +1,7 @@
 import socket
 import threading
 from tictactoe import TicTacToe
-
+import time
 
 host = socket.gethostbyname(socket.gethostname())
 port = 55555
@@ -79,6 +79,32 @@ def handle_client(client, player, game, clients_lock):
                                                         #if game is not over tells client its the other players move
                     else:
                         client.send("Invalid move!\n".encode('utf-8'))        
+                else:
+                    client.send("Not your turn!\n".encode('utf-8'))
+            elif player == game.player and data.startswith('SMOVE'):              # If it is the player's turn
+                move_str, move_value, a,b,c,PrevPlayer = data.split(' ')                  # splits data being recieved into string and the value
+                if move_str == 'SMOVE':                                         # If the client wants to make a move
+                    move = int(move_value)                                     # sets var move to move int from data
+                    if game.validMove(move, player):                           # checks if move is valid
+                        game.makeMove(move, player)                            # if valud makes move
+                        game.show()                                            # prints the board in the console with the move
+                        if game.isWinner(player):
+                            message = game.show2()
+                            client.send(str.encode(f'You won! \n'))
+                       #     break
+                        elif game.isBoardFull():
+                            message = game.show2()
+                            client.send(str.encode(f'You tied! \n'))
+                         #   break
+                        else:
+                            game.go2OthPlayer()   
+                            
+                        client.send(str.encode(f'SMOVE CPU' )) #should encode SMOVE and other cpu player
+                                                        
+                    elif(PrevPlayer == 1 and not game.validMove(move, player)): #hard codes in player 1 invalid move
+                        client.send("Invalid move!\n".encode('utf-8'))
+                    elif(PrevPlayer == 2 and not game.validMove(move, player)): #should loop cpu if not valid move 
+                        client.send("SMOVE CPU".encode('utf-8'))          
                 else:
                     client.send("Not your turn!\n".encode('utf-8'))
   
