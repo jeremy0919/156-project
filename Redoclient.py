@@ -5,9 +5,9 @@ import random
 
 host = socket.gethostbyname(socket.gethostname()) #comment out if not using same computer to host and play
 while(True):
-    Gamemode = input("S for Single player or M for multiPlayer")
+    Gamemode = input("S for Single player or M for multiPlayer \n")
     if(Gamemode == "S"):
-        print("do something")
+       # print("do something")
         playerNum = 1; #auto sets playernum to one so playernum 2 can be hardcoded as computer
         break
     if(Gamemode=="M"):
@@ -18,7 +18,7 @@ def rec_message(client_socket):
     while True:
         message = client_socket.recv(1024).decode('utf-8')
         if message:
-            if not message.endswith(str(playerNum)):
+            if not message.endswith(str(playerNum)) and not message.endswith("CPU"):
                 print(message)
          #   if message.startswith('Tic Tac Toe!'): # too much time trying to get to print right 
               #  print("Move:", end="")  # Print "Move:" only when it's the current player's turn
@@ -28,8 +28,9 @@ def rec_message(client_socket):
             print('Make your move:')
         while(message.endswith('CPU')): # in theory when it recieves a message back that ends in cpu
             loc = random.randint(1, 9) # keeps sending messages for random moves
-            data = f'SMOVE {loc} Made by player {2}' #on behalf of player 2 to server
-            client_socket.send(str.encode(data))
+            message = f'SMOVE {loc} Made by player {0}' #on behalf of player 0/CPU to server
+          #  print(message)
+            client_socket.send(str.encode(message))
 
 
 def inGame1(client_socket):
@@ -46,7 +47,7 @@ def inGame1(client_socket):
                 pass
 
             if temp.upper() in ["HELP", "RESTART", "SHOW", "QUIT"]:  #for some reason upper() does not work
-                data = f'{temp}'
+                data = f'{temp} SMOVE'
                 client_socket.send(str.encode(data))
                 break
             elif move is not None and 1 <= move <= 9:
@@ -99,7 +100,7 @@ if __name__ == "__main__":
         playerNum = 1
         print("")
     else:
-        playerNum = 2
+        playerNum = 0
 
     print(f"You are player {playerNum}\n")
     if(Gamemode == "M"):
