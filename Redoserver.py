@@ -74,25 +74,30 @@ def handle_client(client, player, game, clients_lock):
                     if game.validMove(move, player):                           # checks if move is valid
                         game.makeMove(move, player)                            # if valud makes move
                         game.show()                                            # prints the board in the console with the move
+                        print(game.isBoardFull())
                         if game.isWinner(player):
                             message = game.show2()
                             for other_client in clients:                                            # broadcasts to all clients
                                     try:
                                         other_client.send(str.encode(message))                             # whats sent on one client dispalys on the other
+                                       
+                                        message1= f'player {player} won\n'
+                                        other_client.send(str.encode(message1))
                                     except:
                                         # Handle potential disconnection
                                         pass
-                            client.send(str.encode(f'You won! \n'))
+                      #      client.send(str.encode(f'You won! \n'))
                        #     break
-                        elif game.isBoardFull():
+                        elif  game.isBoardFull():
                             message = game.show2()
                             for other_client in clients:                                            # broadcasts to all clients
                                     try:
                                         other_client.send(str.encode(message))                             # whats sent on one client dispalys on the other
+                                        other_client.send(str.encode(f'You tied! \n'))
                                     except:
                                         # Handle potential disconnection
                                         pass
-                            client.send(str.encode(f'You tied! \n'))
+                       #     client.send(str.encode(f'You tied! \n'))
                          #   break
                         else:
                             game.go2OthPlayer()   

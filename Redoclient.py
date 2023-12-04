@@ -25,10 +25,12 @@ def rec_message(client_socket):
             print("type restart to restart or quit to exit")
         if(message.startswith('Game is restarting!')):
             print("Make your move: \n")
+      
         while(message.endswith('CPU')): # in theory when it recieves a message back that ends in cpu
             loc = random.randint(1, 9) # keeps sending messages for random moves
             message = f'SMOVE {loc} Made by player {0}' #on behalf of player 0/CPU to server
             client_socket.send(str.encode(message))
+
 
 
 def inGame1(client_socket):
@@ -64,12 +66,13 @@ def inGame1(client_socket):
 
 def inGame(client_socket):
     time.sleep(.2) #neccisary if using input text but print statements often overlap input text
+ 
     while True:
         try:
-            data = f'SHOW'
-            client_socket.send(str.encode(data)) #by using this each time might not need cpu move
+        #    data = f'SHOW'
+        #    client_socket.send(str.encode(data)) #by using this each time might not need cpu move
             
-            
+         
             temp = input()          
             move = None
 

@@ -1,7 +1,7 @@
 class TicTacToe:
 
     def __init__(self):
-        self.board = [' ' for _ in range(10)]  # we will use a single list to rep 3x3 board
+        self.board = [' ' for _ in range(9)]  # we will use a single list to rep 3x3 board
         self.player_symbol = ['X', 'O']   # keep track of which player goes first
         self.win_combos = [    # all possible winning combos
             
@@ -49,9 +49,10 @@ class TicTacToe:
         return "Try and get a straight line of your symbol"
     def isBoardFull(self):
         return all(i != ' ' for i in self.board)         # check if board is full
+       #return [i != ' ' for i in self.board]
     
     def restart(self):                                  #restarts the game by clearing the input values and resetting player
-        self.board = [' ' for _ in range(10)]
+        self.board = [' ' for _ in range(9)]
         self.player = 0
     def show(self):                                     #prints basic text example of the board
         print("\n\n")
