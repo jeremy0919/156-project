@@ -20,16 +20,14 @@ def rec_message(client_socket):
         if message:
             if not message.endswith(str(playerNum)) and not message.endswith("CPU"):
                 print(message)
-         #   if message.startswith('Tic Tac Toe!'): # too much time trying to get to print right 
-              #  print("Move:", end="")  # Print "Move:" only when it's the current player's turn
-        if message.startswith('You won!') or message.startswith('You tied!'):
+
+        if message.startswith('You won!') or message.startswith('You tied!')or message.startswith('CPU won!'):
             print("type restart to restart or quit to exit")
-        if(message.startswith('game is restarting')):
-            print('Make your move:')
+        if(message.startswith('Game is restarting!')):
+            print("Make your move: \n")
         while(message.endswith('CPU')): # in theory when it recieves a message back that ends in cpu
             loc = random.randint(1, 9) # keeps sending messages for random moves
             message = f'SMOVE {loc} Made by player {0}' #on behalf of player 0/CPU to server
-          #  print(message)
             client_socket.send(str.encode(message))
 
 
@@ -37,25 +35,27 @@ def inGame1(client_socket):
     time.sleep(.2) #neccisary if using input text but print statements often overlap input text
     while True:
         try:
-         
-            temp = input()          
-            move = None
+            data = f'SHOW SMOVE'
+            client_socket.send(str.encode(data)) #by using this each time might not need cpu move
+            
+            temp = input()                      #takes in input from client side
+            move = None                         #declaration
 
             try:
-                move = int(temp)
+                move = int(temp)                #converts input to an int
             except ValueError:
                 pass
 
             if temp.upper() in ["HELP", "RESTART", "SHOW", "QUIT"]:  #for some reason upper() does not work
                 data = f'{temp} SMOVE'
-                client_socket.send(str.encode(data))
+                client_socket.send(str.encode(data))                #sends non move commands
                 break
             elif move is not None and 1 <= move <= 9:
-                data = f'SMOVE {move} Made by player {playerNum}'
-                client_socket.send(str.encode(data))
+                data = f'SMOVE {move} Made by player {playerNum}'   #sends data to server, important pieces are SMOVE, move, playerNum
+                client_socket.send(str.encode(data))                #extra words exists for easy debugging ^
                 break
             else:
-                print('Invalid move! \n')
+                print('Invalid move! \n')                           #prints invalid move and stays in loop
                 continue
 
         except ValueError:
@@ -66,7 +66,10 @@ def inGame(client_socket):
     time.sleep(.2) #neccisary if using input text but print statements often overlap input text
     while True:
         try:
-         
+            data = f'SHOW'
+            client_socket.send(str.encode(data)) #by using this each time might not need cpu move
+            
+            
             temp = input()          
             move = None
 
@@ -80,7 +83,7 @@ def inGame(client_socket):
                 client_socket.send(str.encode(data))
                 break
             elif move is not None and 1 <= move <= 9:
-                data = f'MOVE {move} Made by player {playerNum}'
+                data = f'MOVE {move} Made by player {playerNum}'  #sends data to server, important pieces are MOVE, move, playerNum
                 client_socket.send(str.encode(data))
                 break
             else:
@@ -92,9 +95,9 @@ def inGame(client_socket):
             continue
 
 if __name__ == "__main__":
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #start server, get ip printed on screen declare host to it on line below
     #host = "192.168.1.171" #modify based off of host server IP
-    client_socket.connect((host, 55555))
+    client_socket.connect((host, 55555))                               #ensure port is open
 
     if playerNum == 1:
         playerNum = 1
@@ -110,7 +113,7 @@ if __name__ == "__main__":
     thread.start()
 
     while True:
-        if(Gamemode == "S"):
+        if(Gamemode == "S"):                    #if game mode is single player 
             inGame1(client_socket)
-        if(Gamemode == "M"):
+        if(Gamemode == "M"):                    #if game mode is multiplayer
             inGame(client_socket)

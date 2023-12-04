@@ -60,8 +60,8 @@ class TicTacToe:
             print(f"  {row}  ")
             if i < 6:
                 print("-------------")
-    def show2(self):
+    def show2(self): #needed so that board could be sent across message, returns to client instead of prints to server side
         return '\n\n'.join([
-            '  ' + '  |  '.join(self.board[i:i + 3]) + '  ' + ('\n-------------' if i < 6 else '')
+            '  ' + '  |  '.join(self.board[i:i + 3]) + '  ' + ('\n----------------' if i < 6 else '')
             for i in range(0, 9, 3)
         ])
