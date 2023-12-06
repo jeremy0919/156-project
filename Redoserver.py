@@ -5,13 +5,31 @@ import time
 
 host = socket.gethostbyname(socket.gethostname())
 port = 55555
+#room = [0, 0,0,0,0]
+#    client.send(str.encode('Tic Tac Toe!'))
+ #   client.send(str.encode(f'current rooms have {room} players'))
+  #  client.send(str.encode('pick your room number 1-5'))
+   # while True:
+    #    try:
+     #       data = client.recv(1024).decode('utf-8')
 
-def handle_client(client, player, game, clients_lock):
-    client.send(str.encode('Tic Tac Toe!'))
-
+      #      print(f"data is:  {data}")
+       #     temp = int(data)
+        #    room[temp] +=1
+         #   if(temp>0 and temp<=5):
+          #      break
+       # except ValueError:
+        #    print("pick a valid number")
+clients = []
+def handle_client(client_dict, player, game, clients_lock, room_data):
+    client = client_dict['client'] 
+    client.send(str('Tic-Tac-Toe'))
+    print("handle_client")
     while True:
         try:
-            data = client.recv(1024).decode('utf-8')
+            if data.startswith('HELLO'):
+                print(f"Received initial message: {data}")
+            data = client.recv(2048).decode('utf-8')
             print(f"data after send {data}")
             print(f"Player is  {game.player}")
             print(f"current player is  {[player]}")
@@ -76,13 +94,16 @@ def handle_client(client, player, game, clients_lock):
                         game.makeMove(move, player)                            # if valud makes move
                         game.show()  
                         
-                        client.send(str.encode(game.show2()))                                           # prints the board in the console with the move
+                                                            # prints the board in the console with the move
                         if game.isWinner(player):
                             message = game.show2()
                             for other_client in clients:                                            # broadcasts to all clients
                                     try:
-                                        other_client.send(str.encode(message))                             # whats sent on one client dispalys on the other
-                                        message1= f'player {game.player} won\n'
+                                        other_client.send(str.encode(message))   
+                                        #print(f"data after send {data}")
+                                        #print(f"Player is  {game.player}")
+                                        #print(f"current player is  {[player]}")                          # whats sent on one client dispalys on the other
+                                        message1= f'player {player} won\n'
                                         other_client.send(str.encode(message1))
                                     except:
                                         # Handle potential disconnection
@@ -101,7 +122,7 @@ def handle_client(client, player, game, clients_lock):
                        #     client.send(str.encode(f'You tied! \n'))
                          #   break
                         else:
-                           
+                            client.send(str.encode(game.show2()))   
                                                      # whats sent on one client dispalys on the other
                                   
                             game.go2OthPlayer()   
@@ -181,31 +202,68 @@ def handle_client(client, player, game, clients_lock):
 
 def start():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((host, port)) #binds server to ip and port
+    server.bind((host, port))  # Binds server to IP and port
     server.listen(2)
 
-    print(f"Server is listening on {host}:{port}") #outputs server ip and port so client can get IP
+    print(f"Server is listening on {host}:{port}")
 
     game = TicTacToe()
-    game.restart()  #restarts and displays the game on boot of server
-    game.show() 
-    #Chat gpt
-    clients_lock = threading.Lock() #locks for client, idea from 114 application from chat gpt for python usage
-    global clients #makes client list so moves can be sent to all clients
-    clients = []
+    game.restart()
+    game.show()
+
+    # Chat GPT
+    clients_lock = threading.Lock()
+    global clients
+
+    room_data = {}  # Dictionary to store room information
+
+    def display_and_choose_room(client, room_data):
+        with clients_lock:
+            available_rooms = [room for room in room_data if len(room_data[room]['clients']) < 2]
+            if not available_rooms:
+                room_choice = len(room_data) + 1  # Create a new room if no available rooms
+            else:
+                print("Available Rooms:")
+                for room in available_rooms:
+                    print(f"Room {room}: {len(room_data[room]['clients'])} player(s) connected")
+                while True:
+                    room_choice = int(input("Choose a room number (or enter a new number to create a room): "))
+                    if room_choice in available_rooms or room_choice > len(room_data):
+                        break
+                    else:
+                        print("Invalid room number. Please choose a valid room.")
+        return room_choice
 
     while True:
         client, address = server.accept()
-        print(f"Connected has been established with {address}") #informs that a player has been connected
+        print(f"Connected has been established with {address}")
 
         with clients_lock:
-            clients.append(client)
-#end chatGPT
-        player = game.go2OthPlayer() #swaps player number
-        game.addPlayer(player) #adds the player
+            # Display available rooms and let the client choose
+            room_choice = display_and_choose_room(client, room_data)
+            print(f'{room_choice} \n')
 
-        thread = threading.Thread(target=handle_client, args=(client, player, game, clients_lock))
-        thread.start() #starts threads to hold sockets
+            # Associate the client with the selected room
+            clients.append({
+                'client': client,
+                'player': game.go2OthPlayer(),
+                'game': game,
+                'room_number': room_choice
+            })
+            print(f'{clients[-1]} \n')  # Print the last client for debugging
+
+            # Update room data with the new connection
+            if room_choice not in room_data:
+                room_data[room_choice] = {'clients': []}
+            room_data[room_choice]['clients'].append(client)
+
+        thread = threading.Thread(
+            target=handle_client,
+            args=(client, clients[-1]['player'], clients[-1]['game'], clients_lock, room_data)
+        )
+        thread.start()
+
+# Function to display available rooms and let the client choose
 
 if __name__ == '__main__':
     start()
