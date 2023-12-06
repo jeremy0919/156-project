@@ -142,7 +142,7 @@ def connect_to_server(host, port, playerNum, Gamemode, room_number):
 
 if __name__ == "__main__":
    # host = "10.62.77.88"
-    port = 55555
+    port = 55556
     #playerNum = 0
   #  Gamemode = "M"
     room_number = int(input("Enter the room number you want to join: "))

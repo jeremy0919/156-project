@@ -4,7 +4,7 @@ from tictactoe import TicTacToe
 import time
 
 host = socket.gethostbyname(socket.gethostname())
-port = 55555
+port = 55556
 #room = [0, 0,0,0,0]
 #    client.send(str.encode('Tic Tac Toe!'))
  #   client.send(str.encode(f'current rooms have {room} players'))
@@ -213,7 +213,7 @@ def start():
 
     # Chat GPT
     clients_lock = threading.Lock()
-    global clients
+#    global clients
 
     room_data = {}  # Dictionary to store room information
 
@@ -259,7 +259,7 @@ def start():
 
         thread = threading.Thread(
             target=handle_client,
-            args=(client, clients[-1]['player'], clients[-1]['game'], clients_lock, room_data)
+            args=(clients[-1]['client'], clients[-1]['player'], clients[-1]['game'], clients_lock,  clients[-1]['room_number'])
         )
         thread.start()
 
@@ -267,3 +267,4 @@ def start():
 
 if __name__ == '__main__':
     start()
+
