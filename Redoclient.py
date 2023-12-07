@@ -3,7 +3,7 @@ import threading
 import time
 import random
 
-#host = socket.gethostbyname(socket.gethostname()) #comment out if not using same computer to host and play
+host = socket.gethostbyname(socket.gethostname()) #comment out if not using same computer to host and play
 while(True):
     Gamemode = input("S for Single player or M for multiPlayer \n")
     if(Gamemode == "S"):
@@ -99,7 +99,7 @@ def inGame(client_socket):
 
 if __name__ == "__main__":
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #start server, get ip printed on screen declare host to it on line below
-    host = "10.62.77.88" #modify based off of host server IP
+  #  host = "10.62.77.88" #modify based off of host server IP
     client_socket.connect((host, 55555))                               #ensure port is open
 
     if playerNum == 1:

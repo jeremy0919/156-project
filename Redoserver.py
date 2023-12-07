@@ -12,9 +12,9 @@ def handle_client(client, player, game, clients_lock):
     while True:
         try:
             data = client.recv(1024).decode('utf-8')
-            print(f"data after send {data}")
-            print(f"Player is  {game.player}")
-            print(f"current player is  {[player]}")
+        #    print(f"data after send {data}")
+        #    print(f"Player is  {game.player}")
+         #   print(f"current player is  {[player]}")
             
             if(player == 2): #helps handle restart
                 player =1
@@ -76,13 +76,16 @@ def handle_client(client, player, game, clients_lock):
                         game.makeMove(move, player)                            # if valud makes move
                         game.show()  
                         
-                        client.send(str.encode(game.show2()))                                           # prints the board in the console with the move
+                                                            # prints the board in the console with the move
                         if game.isWinner(player):
                             message = game.show2()
                             for other_client in clients:                                            # broadcasts to all clients
                                     try:
-                                        other_client.send(str.encode(message))                             # whats sent on one client dispalys on the other
-                                        message1= f'player {game.player} won\n'
+                                        other_client.send(str.encode(message))   
+                                        #print(f"data after send {data}")
+                                        #print(f"Player is  {game.player}")
+                                        #print(f"current player is  {[player]}")                          # whats sent on one client dispalys on the other
+                                        message1= f'player {player} won\n'
                                         other_client.send(str.encode(message1))
                                     except:
                                         # Handle potential disconnection
@@ -101,13 +104,13 @@ def handle_client(client, player, game, clients_lock):
                        #     client.send(str.encode(f'You tied! \n'))
                          #   break
                         else:
-                           
+                            client.send(str.encode(game.show2()))   
                                                      # whats sent on one client dispalys on the other
                                   
                             game.go2OthPlayer()   
                             with clients_lock:                                                          #not entirely sure
                                 for other_client in clients:                                            # broadcasts to all clients
-                                    print(other_client)
+                               #     print(other_client)
                                     try:
                                         other_client.send(str.encode(data))                             # whats sent on one client dispalys on the other
                                     except:
@@ -178,6 +181,7 @@ def handle_client(client, player, game, clients_lock):
     with clients_lock:
         clients.remove(client)
     client.close()
+
 
 def start():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
