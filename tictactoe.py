@@ -1,7 +1,7 @@
 class TicTacToe:
 
     def __init__(self):
-        self.board = [' ' for _ in range(10)]  # we will use a single list to rep 3x3 board
+        self.board = [' ' for _ in range(9)]  # we will use a single list to rep 3x3 board
         self.player_symbol = ['X', 'O']   # keep track of which player goes first
         self.win_combos = [    # all possible winning combos
             
@@ -45,13 +45,14 @@ class TicTacToe:
             if all(self.board[i-1] == self.player_symbol[player - 1] for i in combo): # check if player has all 3 in a row
                 return True
         return False
-    def help():
-        print("Try and get a straight line of your symbol")
+    def help(self):
+        return "Try and get a straight line of your symbol"
     def isBoardFull(self):
         return all(i != ' ' for i in self.board)         # check if board is full
+       #return [i != ' ' for i in self.board]
     
     def restart(self):                                  #restarts the game by clearing the input values and resetting player
-        self.board = [' ' for _ in range(10)]
+        self.board = [' ' for _ in range(9)]
         self.player = 0
     def show(self):                                     #prints basic text example of the board
         print("\n\n")
@@ -60,3 +61,8 @@ class TicTacToe:
             print(f"  {row}  ")
             if i < 6:
                 print("-------------")
+    def show2(self): #needed so that board could be sent across message, returns to client instead of prints to server side
+        return '\n\n'.join([
+            '  ' + '  |  '.join(self.board[i:i + 3]) + '  ' + ('\n----------------' if i < 6 else '')
+            for i in range(0, 9, 3)
+        ])
